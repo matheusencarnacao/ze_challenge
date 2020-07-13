@@ -1,0 +1,106 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  Builds serverless API, complete with Lambda functions,
+  API Gateway, SQS Queues, DynamoDB table, and an S3 bucket.
+Globals:
+  Function:
+    Timeout: 3
+    Environment:
+      Variables:
+        TABLE_NAME: !Ref DemoTable
+Resources:
+  DemoServerlessApi:
+    Type: AWS::Serverless::Api
+    Properties:
+      StageName: Prod
+  GetMessagesFunction:
+    Type: AWS::Serverless::Function
+    Description: Get all messages in DynamoDB table (scan)
+    Properties:
+      Description: Get all messages in DynamoDB table (scan)
+      CodeUri: consult_order/
+      Handler: app.getMessages
+      Runtime: nodejs10.x
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref DemoTable
+      Events:
+        getMessages:
+          Type: Api
+          Properties:
+            Path: /message
+            Method: get
+            RestApiId: !Ref DemoServerlessApi
+  GetMessageFunction:
+    Type: AWS::Serverless::Function
+    Description: Get single message based on timestamp and location
+    Properties:
+      Description: Get single message based on timestamp and location
+      CodeUri: consult_order/
+      Handler: app.getMessage
+      Runtime: nodejs10.x
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref DemoTable
+      Events:
+        getMessages:
+          Type: Api
+          Properties:
+            Path: /message/{date}
+            Method: get
+            RestApiId: !Ref DemoServerlessApi
+  PostMessageFunction:
+    Type: AWS::Serverless::Function
+    Description: Create new message item in DynamoDB table
+    Properties:
+      Description: Create new message item in DynamoDB table
+      CodeUri: consult_order/
+      Handler: app.postMessage
+      Runtime: nodejs10.x
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref DemoTable
+      Events:
+        postMessage:
+          Type: Api
+          Properties:
+            Path: /message
+            Method: post
+            RestApiId: !Ref DemoServerlessApi
+  PutMessageFunction:
+    Type: AWS::Serverless::Function
+    Description: Update message item in DynamoDB table
+    Properties:
+      Description: Update message item in DynamoDB table
+      CodeUri: consult_order/
+      Handler: app.putMessage
+      Runtime: nodejs10.x
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref DemoTable
+      Events:
+        putMessage:
+          Type: Api
+          Properties:
+            Path: /message/{date}
+            Method: put
+            RestApiId: !Ref DemoServerlessApi
+  DeleteMessageFunction:
+    Type: AWS::Serverless::Function
+    Description: Delete message item in DynamoDB table
+    Properties:
+      Description: Delete message item in DynamoDB table
+      CodeUri: consult_order/
+      Handler: app.deleteMessage
+      Runtime: nodejs10.x
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref DemoTable
+      Events:
+        deleteMessage:
+          Type: Api
+          Properties:
+            Path: /message/{date}
+            Method: delete
+            RestApiId: !Ref DemoServerlessAp
