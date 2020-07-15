@@ -1,8 +1,7 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
 Description: >
-  Builds serverless API, complete with Lambda functions,
-  API Gateway, SQS Queues, DynamoDB table, and an S3 bucket.
+  Build serverless back-end for Ze Delivery Challenge
 Globals:
   Function:
     Timeout: 3

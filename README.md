@@ -67,10 +67,5 @@ If the delivery man arrives the location or next to the customer's location. The
 
 ## IaC
 
-I chose to use **Amazon CloudFormation** for deploy the resources, because for me, it's more easy to understand and I can validate the template with **AWS SAM** (Simple Application Model).
-
-**Obs: In this exactly moment, SNS mobile push notification is not supported by CloudFormation, so the implementation have to be done by UI or CLI.**
-
-https://github.com/aws-cloudformation/aws-cloudformation-coverage-roadmap/issues/148
-
+I tried to create the Workflow with **Amazon CloudFormation**, but unfortunately with my basic experience with IoC and my busy week, I can't delivery a good implementation of the Infraestructure as Code.
 
